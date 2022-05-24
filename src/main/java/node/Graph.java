@@ -8,6 +8,7 @@ class Graph {
 
   //Liczba wierzchołków w grafie
   private int numberOfVertices;
+  private int totalVertex;
 
   //Połączenia danego wierzchołka
   private LinkedList<Integer> listOfEdges[];
@@ -15,6 +16,7 @@ class Graph {
   Graph(int number) {
     numberOfVertices = number;
     listOfEdges = new LinkedList[number];
+    totalVertex = number;
 
     for (int i = 0; i < number; ++i) {
       listOfEdges[i] = new LinkedList();
@@ -26,12 +28,31 @@ class Graph {
     //Ponieważ graf nie jest skierowany - dodajemy połączenia w dwie strony
     listOfEdges[vertexA].add(vertexB);
     listOfEdges[vertexB].add(vertexA);
+    totalVertex += 1;
   }
 
   void greedyColoring() {
 
+//    int edgeReady = totalVertex;
     //Tablica zawiera kolory wszystkich wierzchołków
-    int colorTable[] = new int[numberOfVertices];
+    int colorTable[] = new int[totalVertex];
+    LinkedList<Integer> vertexes[] = new LinkedList[totalVertex];
+    for (int i = numberOfVertices; i < totalVertex; i++) {
+      vertexes[i] = new LinkedList<>();
+    }
+
+    for (int i = 0; i < numberOfVertices; i++) {
+      vertexes[i] = listOfEdges[i];
+
+      Iterator<Integer> iterator = listOfEdges[i].iterator();
+
+      while (iterator.hasNext()) {
+        int neighbour = iterator.next();
+        vertexes[numberOfVertices + i].add(i);
+      }
+    }
+
+
 
     //Domyślnie każdy z nich ma wartość -1
     Arrays.fill(colorTable, -1);
